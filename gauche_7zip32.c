@@ -27,7 +27,7 @@ void Scm_Init_gauche_7zip32(void)
     SCM_INIT_EXTENSION(gauche_7zip32);
 
     /* Create the module if it doesn't exist yet. */
-    mod = SCM_MODULE(SCM_FIND_MODULE("gauche_7zip32", TRUE));
+    mod = SCM_MODULE(SCM_FIND_MODULE("os.windows.7zip32", TRUE));
 
     /* Register stub-generated procedures */
     Scm_Init_gauche_7zip32lib(mod);
