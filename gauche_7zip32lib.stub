@@ -1,0 +1,18 @@
+;;;
+;;; gauche_7zip32lib.stub
+;;;
+
+"
+#include \"gauche_7zip32.h\"
+"
+
+;; The following entry is a dummy one.
+;; Replace it for your definitions.
+
+(define-cproc test-gauche_7zip32 () ::<const-cstring>
+  (result "gauche_7zip32 is working"))
+
+
+;; Local variables:
+;; mode: scheme
+;; end:
