@@ -1,2 +1,9 @@
-config.log
+*.log
 *.o
+*.dll
+*.status
+*.gpd
+*.cache
+configure
+VERSION
+Makefile
