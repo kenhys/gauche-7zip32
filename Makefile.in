@@ -26,7 +26,7 @@ LOCAL_PATHS = "@LOCAL_PATHS@"
 PACKAGE   = gauche-7zip32
 
 ARCHFILES = gauche_7zip32.$(SOEXT)
-SCMFILES  = $(srcdir)/gauche_7zip32.scm
+SCMFILES  = $(srcdir)/lib/os/windows/7zip32.scm
 HEADERS   = 
 
 TARGET    = $(ARCHFILES)
@@ -48,7 +48,7 @@ gauche_7zip32.$(SOEXT): $(gauche_7zip32_SRCS)
 
 check : all
 	@rm -f test.log
-	$(GOSH) -I. -I$(srcdir) $(srcdir)/test.scm > test.log
+	$(GOSH) -I. -I$(srcdir) -I./lib $(srcdir)/test.scm > test.log
 
 install : all
 	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)

@@ -4,9 +4,10 @@
 
 (use gauche.test)
 
-(test-start "gauche_7zip32")
-(use gauche_7zip32)
-(test-module 'gauche_7zip32)
+(test-start "os.windows.7zip32")
+(use os.windows)
+(use os.windows.7zip32)
+(test-module 'os.windows.7zip32)
 
 ;; The following is a dummy test code.
 ;; Replace it for your tests.

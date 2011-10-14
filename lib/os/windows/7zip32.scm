@@ -5,5 +5,5 @@
 (define-module os.windows.7zip32
   (export-all)
   )
-(select-module os.windows)
-(dynamic-load "os--windows")
+(select-module os.windows.7zip32)
+(dynamic-load "gauche_7zip32")
