@@ -4,6 +4,7 @@
 
 "
 #include \"gauche_7zip32.h\"
+#include \"7-zip32.h\"
 "
 
 ;; The following entry is a dummy one.
@@ -22,6 +23,20 @@
         "SCM_RESULT = C7ZIP32_BOX(p);"))
 
 ;; int WINAPI SevenZip(const HWND _hwnd, LPCSTR _szCmdLine,
+(define-cproc seven-zip
+  (h::<7zip32> arg::<const-cstring>) ::<int>
+  (body <int>
+        "C7Zip32 *p = C7ZIP32_UNBOX(h);"
+        "DWORD dwStatus = 0;"
+        "DWORD dwSize = 0;"
+        "LPSTR outbuf[4096];"
+        "if (p->dll!=NULL){"
+        " WINAPI_SEVENZIP func = (WINAPI_SEVENZIP)GetProcAddress(p->dll, \"SevenZip\");"
+        " if (func != NULL) {"
+        "   dwStatus = func(NULL, arg, NULL, dwSize);"
+        " }"
+        "}"
+        "SCM_RESULT = dwStatus;"))
 ;; WORD WINAPI SevenZipGetVersion(VOID)
 (define-cproc seven-zip-get-version
   (h::<7zip32>) ::<uint32>
@@ -97,6 +112,18 @@
 ;; DWORD WINAPI SevenZipGetDefaultPassword(HARC _harc,
 ;; int WINAPI SevenZipPasswordDialog(HWND _hwnd, LPSTR _szBuffer, DWORD _dwSize)
 ;; BOOL WINAPI SevenZipSetUnicodeMode(BOOL _bUnicode)
+(define-cproc seven-zip-set-unicode-mode
+  (h::<7zip32> flag::<boolean>) ::<boolean>
+  (body <boolean>
+        "C7Zip32 *p = C7ZIP32_UNBOX(h);"
+        "BOOL bStatus = 0;"
+        "if (p->dll!=NULL){"
+        " WINAPI_SEVENZIPSETUNICODEMODE func = (WINAPI_SEVENZIPSETUNICODEMODE)GetProcAddress(p->dll, \"SevenZipSetUnicodeMode\");"
+        " if (func != NULL) {"
+        "   bStatus = func(flag);"
+        " }"
+        "}"
+        "SCM_RESULT = bStatus;"))
 
 ;; Local variables:
 ;; mode: scheme
