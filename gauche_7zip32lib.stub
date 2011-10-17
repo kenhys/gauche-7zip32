@@ -12,6 +12,91 @@
 (define-cproc test-gauche_7zip32 () ::<const-cstring>
   (result "gauche_7zip32 is working"))
 
+(define-type <7zip32> "C7Zip32*" "C7Zip32"
+  "C7ZIP32_P" "C7ZIP32_UNBOX" "C7ZIP32_BOX")
+
+(define-cproc seven-zip-create () ::<7zip32>
+  (body <7zip32>
+        "C7Zip32 *p = malloc(sizeof(C7Zip32));"
+        "p->dll = LoadLibrary(\"7-zip32\");"
+        "SCM_RESULT = C7ZIP32_BOX(p);"))
+
+;; int WINAPI SevenZip(const HWND _hwnd, LPCSTR _szCmdLine,
+;; WORD WINAPI SevenZipGetVersion(VOID)
+(define-cproc seven-zip-get-version
+  (h::<7zip32>) ::<uint32>
+  (body <uint32>
+        "C7Zip32 *p = C7ZIP32_UNBOX(h);"
+        "DWORD dwStatus = 0;"
+        "if (p->dll!=NULL){"
+        " WINAPI_SEVENZIPGETVERSION func = (WINAPI_SEVENZIPGETVERSION)GetProcAddress(p->dll, \"SevenZipGetVersion\");"
+        " if (func != NULL) {"
+        "   dwStatus = func();"
+        " }"
+        "}"
+        "SCM_RESULT = dwStatus;"))
+
+;; BOOL WINAPI SevenZipGetCursorMode(VOID)
+;; BOOL WINAPI SevenZipSetCursorMode(const BOOL _CursorMode)
+;; BOOL WINAPI SevenZipGetBackGroundMode(VOID)
+;; BOOL WINAPI SevenZipSetBackGroundMode(const BOOL _BackGroundMode)
+;; WORD WINAPI SevenZipGetCursorInterval(VOID)
+;; BOOL WINAPI SevenZipSetCursorInterval(const WORD _Interval)
+;; BOOL WINAPI SevenZipGetRunning(VOID)
+;; BOOL WINAPI SevenZipConfigDialog(const HWND _hwnd,
+;; BOOL WINAPI SevenZipCheckArchive(LPCSTR _szFileName, const int _iMode)
+;; int WINAPI SevenZipGetArchiveType(LPCSTR _szFileName)
+;; int WINAPI SevenZipGetFileCount(LPCSTR _szArcFile)
+;; BOOL WINAPI SevenZipQueryFunctionList(const int _iFunction)
+;; HARC WINAPI SevenZipOpenArchive(const HWND _hwnd, LPCSTR _szFileName,
+;; int WINAPI SevenZipCloseArchive(HARC _harc)
+;; int WINAPI SevenZipFindFirst(HARC _harc, LPCSTR _szWildName,
+;; int WINAPI SevenZipFindNext(HARC _harc, INDIVIDUALINFO *_lpSubInfo)
+;; int WINAPI SevenZipGetArcFileName(HARC _harc, LPCSTR _lpBuffer, int _nSize)
+;; DWORD WINAPI SevenZipGetArcFileSize(HARC _harc)
+;; DWORD WINAPI SevenZipGetArcOriginalSize(HARC _harc)
+;; DWORD WINAPI SevenZipGetArcCompressedSize(HARC _harc)
+;; WORD WINAPI SevenZipGetArcRatio(HARC _harc)
+;; WORD WINAPI SevenZipGetArcDate(HARC _harc)
+;; WORD WINAPI SevenZipGetArcTime(HARC _harc)
+;; UINT WINAPI SevenZipGetArcOSType(HARC _harc)
+;; int WINAPI SevenZipIsSFXFile(HARC _harc)
+;; int WINAPI SevenZipGetFileName(HARC _harc, LPCSTR _lpBuffer, int _nSize)
+;; DWORD WINAPI SevenZipGetOriginalSize(HARC _harc)
+;; DWORD WINAPI SevenZipGetCompressedSize(HARC _harc)
+;; WORD WINAPI SevenZipGetRatio(HARC _harc)
+;; WORD WINAPI SevenZipGetDate(HARC _harc)
+;; WORD WINAPI SevenZipGetTime(HARC _harc)
+;; DWORD WINAPI SevenZipGetCRC(HARC _harc)
+;; int WINAPI SevenZipGetAttribute(HARC _harc)
+;; UINT WINAPI SevenZipGetOSType(HARC _harc)
+;; int WINAPI SevenZipGetMethod(HARC _harc, LPSTR _lpBuffer, const int _nSize)
+;; DWORD WINAPI SevenZipGetWriteTime(HARC _harc)
+;; DWORD WINAPI SevenZipGetCreateTime(HARC _harc)
+;; DWORD WINAPI SevenZipGetAccessTime(HARC _harc)
+;; BOOL WINAPI SevenZipGetWriteTimeEx(HARC _harc, FILETIME *_lpftLastWriteTime)
+;; BOOL WINAPI SevenZipGetCreateTimeEx(HARC _harc, FILETIME *_lpftCreationTime)
+;; BOOL WINAPI SevenZipGetAccessTimeEx(HARC _harc, FILETIME *_lpftLastAccessTime)
+;; BOOL WINAPI SevenZipGetArcCreateTimeEx(HARC _harc, FILETIME *_lpftCreationTime)
+;; BOOL WINAPI SevenZipGetArcAccessTimeEx(HARC _harc,
+;; BOOL WINAPI SevenZipGetArcWriteTimeEx(HARC _harc, FILETIME *_lpftLastWriteTime)
+;; BOOL WINAPI SevenZipSetOwnerWindow(HWND _hwnd)
+;; BOOL WINAPI SevenZipClearOwnerWindow(VOID)
+;; BOOL WINAPI SevenZipSetOwnerWindowEx(HWND _hwnd, LPARCHIVERPROC _lpArcProc)
+;; BOOL WINAPI SevenZipKillOwnerWindowEx(HWND _hwnd)
+;; WORD WINAPI SevenZipGetSubVersion(VOID)
+;; BOOL WINAPI SevenZipGetArcFileSizeEx(HARC _harc, ULHA_INT64 *_lpllSize)
+;; BOOL WINAPI SevenZipGetArcOriginalSizeEx(HARC _harc, ULHA_INT64 *_lpllSize)
+;; BOOL WINAPI SevenZipGetArcCompressedSizeEx(HARC _harc, ULHA_INT64 *_lpllSize)
+;; BOOL WINAPI SevenZipGetOriginalSizeEx(HARC _harc, ULHA_INT64 *_lpllSize)
+;; BOOL WINAPI SevenZipGetCompressedSizeEx(HARC _harc, ULHA_INT64 *_lpllSize)
+;; BOOL WINAPI SevenZipSetOwnerWindowEx64(HWND _hwnd,
+;; BOOL WINAPI SevenZipKillOwnerWindowEx64(HWND _hwnd)
+;; BOOL WINAPI SevenZipSetPriority(const int  _nPriority)
+;; int WINAPI SevenZipSetDefaultPassword(HARC _harc, LPCSTR _szPassword)
+;; DWORD WINAPI SevenZipGetDefaultPassword(HARC _harc,
+;; int WINAPI SevenZipPasswordDialog(HWND _hwnd, LPSTR _szBuffer, DWORD _dwSize)
+;; BOOL WINAPI SevenZipSetUnicodeMode(BOOL _bUnicode)
 
 ;; Local variables:
 ;; mode: scheme

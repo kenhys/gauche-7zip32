@@ -1,7 +1,6 @@
 #!/bin/bash
 # -*- coding: utf-8-unix -*-
 
-GDIST_DIR=/c/apps/Gauche-mingw-0.9
 GOSH=gosh
 CFLAGS="-DHAVE_BOOL"
 
