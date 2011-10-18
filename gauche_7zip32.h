@@ -19,6 +19,10 @@ typedef struct _C7Zip32 {
   HANDLE handle;
 } C7Zip32;
 
+typedef struct _CHarc {
+  HARC handle;
+} CHarc;
+
 /* LHA.DLL compatible API */
 typedef int WINAPI (*WINAPI_SEVENZIP)(const HWND _hwnd, LPCSTR _szCmdLine, LPSTR _szOutput, const DWORD _dwSize);
 typedef WORD  WINAPI (*WINAPI_SEVENZIPGETVERSION)(void);
@@ -96,10 +100,15 @@ typedef BOOL WINAPI (*WINAPI_SEVENZIPSETPRIORITY)(const int _nPriority);
 extern ScmObj test_gauche_7zip32(void);
 
 extern ScmClass *C7Zip32Class;
+extern ScmClass *CHarcClass;
 
 #define C7ZIP32_P(obj)      SCM_XTYPEP(obj, C7Zip32Class)
 #define C7ZIP32_UNBOX(obj)  SCM_FOREIGN_POINTER_REF(C7Zip32*, obj)
 #define C7ZIP32_BOX(ptr)    Scm_MakeForeignPointer(C7Zip32Class, ptr)
+
+#define CHARC_P(obj)      SCM_XTYPEP(obj, CHarcClass)
+#define CHARC_UNBOX(obj)  SCM_FOREIGN_POINTER_REF(CHarc*, obj)
+#define CHARC_BOX(ptr)    Scm_MakeForeignPointer(CHarcClass, ptr)
 
 /* Epilogue */
 SCM_DECL_END
