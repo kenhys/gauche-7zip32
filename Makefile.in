@@ -42,7 +42,7 @@ gauche_7zip32_SRCS = $(srcdir)/gauche_7zip32.c $(srcdir)/gauche_7zip32lib.stub
 
 all : $(TARGET)
 
-gauche_7zip32.$(SOEXT): $(gauche_7zip32_SRCS)
+gauche_7zip32.$(SOEXT): $(gauche_7zip32_SRCS) $(srcdir)/gauche_7zip32.h
 	$(GAUCHE_PACKAGE) compile \
 	  --local=$(LOCAL_PATHS) --verbose gauche_7zip32 $(gauche_7zip32_SRCS)
 

@@ -10,6 +10,7 @@
 #include <gauche/extend.h>
 
 #include <windows.h>
+#include "7-zip32.h"
 
 SCM_DECL_BEGIN
 
@@ -21,7 +22,6 @@ typedef struct _C7Zip32 {
 /* LHA.DLL compatible API */
 typedef int WINAPI (*WINAPI_SEVENZIP)(const HWND _hwnd, LPCSTR _szCmdLine, LPSTR _szOutput, const DWORD _dwSize);
 typedef WORD  WINAPI (*WINAPI_SEVENZIPGETVERSION)(void);
-/*
 typedef BOOL  WINAPI (*WINAPI_SEVENZIPGETCURSORMODE)(void);
 typedef BOOL  WINAPI (*WINAPI_SEVENZIPSETCURSORMODE)(const BOOL _CursorMode);
 typedef BOOL  WINAPI (*WINAPI_SEVENZIPGETBACKGROUNDMODE)(void);
@@ -82,14 +82,11 @@ typedef BOOL WINAPI (*WINAPI_SEVENZIPKILLOWNERWINDOWEX64)(HWND _hwnd);
 
 typedef WORD WINAPI (*WINAPI_SEVENZIPGETSUBVERSION)();
 typedef int  WINAPI (*WINAPI_SEVENZIPGETARCHIVETYPE)(LPCSTR _szFileName);
-*/
 typedef BOOL WINAPI (*WINAPI_SEVENZIPSETUNICODEMODE)(BOOL _bUnicode);
-/*
-  typedef int WINAPI (*WINAPI_SEVENZIPSETDEFAULTPASSWORD)(HARC _harc, LPCSTR _szPassword);
+typedef int WINAPI (*WINAPI_SEVENZIPSETDEFAULTPASSWORD)(HARC _harc, LPCSTR _szPassword);
 typedef DWORD WINAPI (*WINAPI_SEVENZIPGETDEFAULTPASSWORD)(HARC _harc, LPSTR _szPassword, DWORD _dwSize);
 typedef int WINAPI (*WINAPI_SEVENZIPPASSWORDDIALOG)(HWND _hwnd, LPSTR _szBuffer, DWORD _dwSize);
 typedef BOOL WINAPI (*WINAPI_SEVENZIPSETPRIORITY)(const int _nPriority);
-*/
 
 /*
  * The following entry is a dummy one.

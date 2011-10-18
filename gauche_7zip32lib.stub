@@ -52,6 +52,19 @@
         "SCM_RESULT = dwStatus;"))
 
 ;; BOOL WINAPI SevenZipGetCursorMode(VOID)
+(define-cproc seven-zip-get-cursor-mode
+  (h::<7zip32>) ::<boolean>
+  (body <boolean> 
+        "C7Zip32 *p = C7ZIP32_UNBOX(h);"
+        "BOOL bStatus = 0;"
+        "if (p->dll!=NULL){"
+        " WINAPI_SEVENZIPGETCURSORMODE func = (WINAPI_SEVENZIPGETCURSORMODE)GetProcAddress(p->dll, \"SevenZipGetCursorMode\");"
+        " if (func != NULL) {"
+        "   bStatus = func();"
+        " }"
+        "}"
+        "SCM_RESULT = bStatus;"))
+
 ;; BOOL WINAPI SevenZipSetCursorMode(const BOOL _CursorMode)
 ;; BOOL WINAPI SevenZipGetBackGroundMode(VOID)
 ;; BOOL WINAPI SevenZipSetBackGroundMode(const BOOL _BackGroundMode)

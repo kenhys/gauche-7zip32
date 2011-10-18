@@ -16,6 +16,13 @@
        (test-gauche_7zip32))
 
 (d (apropos 'zip))
+
+(define zip (seven-zip-create))
+(d zip)
+(d (seven-zip-get-version zip))
+(d (seven-zip zip "x \"passwd.7z\" -aoa -p\"test\" -hide -o\"test\" -r"))
+
+
 ;; epilogue
 (test-end)
 
