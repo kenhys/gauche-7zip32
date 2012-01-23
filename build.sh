@@ -12,36 +12,37 @@ CB_LIBTEST=0
 
 function cb_build ()
 {
-        $GAUCHE_CONFIG --fixup-extension izclib izc
-        $GOSH $GENSTUB izclib.stub
+    mkdir -p log/
+    $GAUCHE_CONFIG --fixup-extension gauche_7zip32lib 7zip32
+        $GOSH $GENSTUB gauche_7zip32lib.stub
         if [ $? -ne 0 ]; then
             exit
         fi
-        com="gcc -c izclib_head.c -I$GDIST_INCDIR"
+        com="gcc -c gauche_7zip32lib_head.c -I$GDIST_INCDIR"
         echo $com
         eval $com
         if [ $? -ne 0 ]; then
             exit
         fi
-        com="gcc -c izclib_tail.c -I$GDIST_INCDIR"
+        com="gcc -c gauche_7zip32lib_tail.c -I$GDIST_INCDIR"
         echo $com
         eval $com
         if [ $? -ne 0 ]; then
             exit
         fi
-        com="LANG=C gcc -c izclib.c -I$GDIST_INCDIR $CFLAGS 2>&1 | tee log/izclib.c.log"
+        com="LANG=C gcc -c gauche_7zip32lib.c -I$GDIST_INCDIR $CFLAGS 2>&1 | tee log/7zip32lib.c.log"
         echo $com
         eval $com
         if [ $? -ne 0 ]; then
             exit
         fi
-        com="LANG=C gcc -c izc.c -I$GDIST_INCDIR $CFLAGS 2>&1 | tee log/izc.c.log"
+        com="LANG=C gcc -c gauche_7zip32.c -I$GDIST_INCDIR $CFLAGS 2>&1 | tee log/7zip32.c.log"
         echo $com
         eval $com
         if [ $? -ne 0 ]; then
             exit
         fi
-        com="LANG=C gcc -lmingw32 `gauche-config --dylib-ldflags` izc.dll *.o  -L. -liz -L$GDIST_LIBDIR -lgauche"
+        com="LANG=C gcc -lmingw32 `gauche-config --dylib-ldflags` gauche-7zip32.dll *.o  -L. -L$GDIST_LIBDIR -lgauche-0.9"
         echo $com
         eval $com
         if [ $? -ne 0 ]; then
@@ -53,11 +54,11 @@ function cb_clean ()
 {
 
     rm -f *.o
-    rm -f izclib.c
+    rm -f 7zip32lib.c
     rm -f config.status
     rm -f configure
     rm -f *.exe
-    rm -f izc.dll
+    rm -f 7zip32.dll
     rm -f *.log
     rm -fr autom4te.*
     rm -f *_head.*
@@ -72,7 +73,7 @@ function cb_test ()
     if [ ! -z "$CB_TEST_SCM" ]; then
         $GOSH -I. $CB_TEST_SCM
     else
-        $GOSH -I. test/test-in.scm
+        sh test/run-test.sh
     fi 
 }
 
@@ -86,14 +87,6 @@ LANG=C g++ -g -o test/nqueen.exe test/nqueen.cpp -I. -L. -liz
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        pgosh)
-            shift
-            export GDIST_DIR=/c/apps/Gauche-mingw-0.9-pthread
-            ;;
-        gosh)
-            export GDIST_DIR=/c/apps/Gauche-mingw-0.9
-            shift
-            ;;
         -g|debug)
             shift
             CFLAGS="$CFLAGS -DHAVE_BOOL -DDEBUG"
@@ -131,11 +124,16 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-GDIST_INCDIR=$GDIST_DIR/lib/gauche/0.9/include
-GDIST_LIBDIR=$GDIST_DIR/bin
-GAUCHE_CONFIG=$GDIST_DIR/bin/gauche-config
-GENSTUB=$GDIST_DIR/share/gauche/0.9/lib/genstub
-export PATH=$GDIST_DIR:$PATH
+if [ -f "$GOSH_PATH" ]; then
+    GOSH_BIN_DIR=`dirname $GOSH_PATH`
+    GOSH_DIR=`dirname $GOSH_BIN_DIR`
+    GDIST_INCDIR=`gauche-config --sysincdir`
+    GDIST_INCDIR=`echo $GDIST_INCDIR|sed -e 's|\\\\|/|g'`
+    
+    GDIST_LIBDIR=$GOSH_DIR/bin
+    GAUCHE_CONFIG=$GOSH_DIR/bin/gauche-config
+    GENSTUB=`gauche-config --syslibdir`/genstub
+fi
 
 if [ $CB_BUILD -eq 1 ]; then
     cb_build

@@ -7,3 +7,8 @@
 configure
 VERSION
 Makefile
+7z920002
+7-zip32.h
+7-zip32.dll
+*_head.c
+*_tail.c
