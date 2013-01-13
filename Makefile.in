@@ -41,34 +41,27 @@ GAUCHE_PKGARCHDIR = "$(DESTDIR)@GAUCHE_PKGARCHDIR@"
 gauche_7zip32_SRCS = $(srcdir)/gauche_7zip32.c $(srcdir)/gauche_7zip32lib.stub
 
 all : $(TARGET)
-
-gauche_7zip32.$(SOEXT): $(gauche_7zip32_SRCS) $(srcdir)/gauche_7zip32.h
-	$(GAUCHE_PACKAGE) compile \
-	  --local=$(LOCAL_PATHS) --verbose gauche_7zip32 $(gauche_7zip32_SRCS)
+	cd src; $(MAKE) all
 
 check : all
 	@rm -f test.log
-	$(GOSH) -I. -I$(srcdir) -I./lib $(srcdir)/test.scm > test.log
+	sh test/run-test.sh >> test.log
+	@cat test.record
 
 install : all
-	$(INSTALL) -m 444 -T $(GAUCHE_PKGINCDIR) $(HEADERS)
-	$(INSTALL) -m 444 -T $(GAUCHE_PKGLIBDIR) $(SCMFILES) 
-	$(INSTALL) -m 555 -T $(GAUCHE_PKGARCHDIR) $(ARCHFILES)
-	$(INSTALL) -m 444 -T $(GAUCHE_PKGLIBDIR)/.packages $(PACKAGE).gpd
+	cd src; $(MAKE) install
 
 uninstall :
-	$(INSTALL) -U $(GAUCHE_PKGINCDIR) $(HEADERS)
-	$(INSTALL) -U $(GAUCHE_PKGLIBDIR) $(SCMFILES) 
-	$(INSTALL) -U $(GAUCHE_PKGARCHDIR) $(ARCHFILES)
-	$(INSTALL) -U $(GAUCHE_PKGLIBDIR)/.packages $(PACKAGE).gpd
+	cd src; $(MAKE) uninstall
 
 clean :
-	$(GAUCHE_PACKAGE) compile --clean gauche_7zip32 $(gauche_7zip32_SRCS)
-	rm -rf core $(TARGET) $(GENERATED) *~ test.log so_locations
+	cd src; $(MAKE) clean
 
 distclean : clean
+	cd src; $(MAKE) distclean
 	rm -rf $(CONFIG_GENERATED)
 
 maintainer-clean : clean
-	rm -rf $(CONFIG_GENERATED) configure VERSION
+	cd src; $(MAKE) maintainer-clean
+	rm -rf configure VERSION $(CONFIG_GENERATED)
 
