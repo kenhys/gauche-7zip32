@@ -55,6 +55,7 @@ AC_SUBST(GAUCHE_PKGARCHDIR)
 
 dnl Check for headers.
 dnl Add your macro calls to check required headers, if you have any.
+AC_CHECK_HEADERS([windows.h])
 
 dnl Check for other programs.
 dnl Add your macro calls to check existence of programs, if you have any.
