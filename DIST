@@ -16,7 +16,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ "$gen" = "yes" ]; then
-  autoconf
+  autoconf -I m4
 fi
 
 if [ "$tgz" = "yes" ]; then
