@@ -11,6 +11,7 @@ dnl Use 7zip32 unless explicitly specified otherwise
 ac_cv_use_7zip32=yes
 SEVENZIP_CFLAGS=
 SEVENZIP_LDFLAGS=
+SEVENZIP_LIBS=-l7zip32
 
 AC_ARG_WITH(7zip32,
   AC_HELP_STRING([--with-7zip32=PATH],
@@ -73,8 +74,9 @@ if test "$ac_cv_use_sevenzip32" = yes; then
   sevenzip32_SCMFILES=7zip32.scm
   AC_SUBST(SEVENZIP_SCMFILES)
 fi
-AC_SUBST(SEVENZIP_CPPFLAGS)
+AC_SUBST(SEVENZIP_CFLAGS)
 AC_SUBST(SEVENZIP_LDFLAGS)
+AC_SUBST(SEVENZIP_LIBS)
 
 dnl Local variables:
 dnl mode: autoconf
